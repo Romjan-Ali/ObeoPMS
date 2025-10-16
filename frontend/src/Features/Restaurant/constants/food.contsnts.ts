@@ -1,0 +1,1 @@
+export const REQUIRED_FIELDS = ['type', 'category', 'foodName']
