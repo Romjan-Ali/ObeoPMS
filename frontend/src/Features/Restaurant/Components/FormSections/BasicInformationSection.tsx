@@ -1,6 +1,7 @@
 // src/Features/Restaurant/Components/FormSections/BasicInformationSection.tsx
 import React from 'react'
-import { type FoodFormData } from '../../types/food'
+import { type FoodFormData } from '../../schemas/foodSchema'
+import type { Control, FieldErrors, UseFormRegister} from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -8,8 +9,10 @@ import CustomSelect from '../CustomSelect'
 import ImageUpload from '../ImageUpload'
 
 interface BasicInformationSectionProps {
+  register: UseFormRegister<FoodFormData>
+  control: Control<FoodFormData>
   formData: FoodFormData
-  errors: Record<string, string>
+  errors: FieldErrors<FoodFormData>
   handleInputChange: (
     field: keyof FoodFormData,
     value: string | File | boolean | null
@@ -19,6 +22,8 @@ interface BasicInformationSectionProps {
 }
 
 const BasicInformationSection: React.FC<BasicInformationSectionProps> = ({
+  register,
+  control,
   formData,
   errors,
   handleInputChange,
@@ -32,7 +37,7 @@ const BasicInformationSection: React.FC<BasicInformationSectionProps> = ({
         Type <span className="text-red-500">*</span>
       </Label>
       <CustomSelect
-        handleInputChange={handleInputChange}
+        control={control}
         items={[
           { value: 'breakfast', title: 'Breakfast' },
           { value: 'lunch', title: 'Lunch' },
@@ -43,14 +48,14 @@ const BasicInformationSection: React.FC<BasicInformationSectionProps> = ({
         field="type"
         placeholder="Select Option"
       />
-      {errors.type && <p className="text-red-500 text-sm">{errors.type}</p>}
+      {errors.type && <p className="text-red-500 text-sm">{errors.type.message}</p>}
 
       {/* Category */}
       <Label htmlFor="category" className="flex items-center gap-1 max-lg:mt-6 max-lg:mb-2">
         Category <span className="text-red-500">*</span>
       </Label>
       <CustomSelect
-        handleInputChange={handleInputChange}
+        control={control}
         items={[
           { value: 'vegetarian', title: 'Vegetarian' },
           { value: 'non-vegetarian', title: 'Non-Vegetarian' },
@@ -61,7 +66,7 @@ const BasicInformationSection: React.FC<BasicInformationSectionProps> = ({
         field="category"
         placeholder="Select Option"
       />
-      {errors.category && <p className="text-red-500 text-sm">{errors.category}</p>}
+      {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
 
       {/* Food Name */}
       <Label htmlFor="foodName" className="flex items-center gap-1 max-lg:mt-6 max-lg:mb-2">
@@ -70,30 +75,27 @@ const BasicInformationSection: React.FC<BasicInformationSectionProps> = ({
       <Input
         id="foodName"
         placeholder="Food Name"
-        value={formData.foodName}
-        onChange={(e) => handleInputChange('foodName', e.target.value)}
+        {...register('foodName')}
       />
-      {errors.foodName && <p className="text-red-500 text-sm">{errors.foodName}</p>}
+      {errors.foodName && <p className="text-red-500 text-sm">{errors.foodName.message}</p>}
 
       {/* Components */}
       <Label htmlFor="components" className="max-lg:mt-6 max-lg:mb-2">Components</Label>
       <Input
         id="components"
         placeholder="Components"
-        value={formData.components}
-        onChange={(e) => handleInputChange('components', e.target.value)}
+        {...register('components')}
       />
-      {errors.components && <p className="text-red-500 text-sm">{errors.components}</p>}
+      {errors.components && <p className="text-red-500 text-sm">{errors.components.message}</p>}
 
       {/* Notes */}
       <Label htmlFor="notes" className="max-lg:mt-6 max-lg:mb-2">Notes</Label>
       <Input
         id="notes"
         placeholder="Notes"
-        value={formData.notes}
-        onChange={(e) => handleInputChange('notes', e.target.value)}
+        {...register('notes')}
       />
-      {errors.notes && <p className="text-red-500 text-sm">{errors.notes}</p>}
+      {errors.notes && <p className="text-red-500 text-sm">{errors.notes.message}</p>}
 
       {/* Description */}
       <Label htmlFor="description" className="flex items-start h-full max-lg:mt-6 max-lg:mb-2">
@@ -102,19 +104,19 @@ const BasicInformationSection: React.FC<BasicInformationSectionProps> = ({
       <Textarea
         id="description"
         placeholder="Description"
-        value={formData.description}
-        onChange={(e) => handleInputChange('description', e.target.value)}
+        {...register('description')}
       />
-      {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+      {errors.description && <p className="text-red-500 text-sm">{errors.description.message}</p>}
 
       {/* Image Upload */}
       <ImageUpload
+        register={register}
         handleInputChange={handleInputChange}
         handleFileChange={handleFileChange}
         fileInputRef={fileInputRef}
         formData={formData}
       />
-      {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
+      {errors.image && <p className="text-red-500 text-sm">{errors.image.message}</p>}
     </>
   )
 }

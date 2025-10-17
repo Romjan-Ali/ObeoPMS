@@ -1,20 +1,15 @@
 // src/Features/Restaurant/Components/FormSections/CostCenterSection.tsx
 import React from 'react'
-import { type FoodFormData } from '../../types/food'
+import { type FoodFormData } from '../../schemas/foodSchema'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
+import { type Control, Controller } from 'react-hook-form'
 
 interface CostCenterSectionProps {
-  formData: FoodFormData
-  errors: Record<string, string>
-  handleInputChange: (field: keyof FoodFormData, value: string | File | boolean | null) => void
+  control: Control<FoodFormData>
 }
 
-const CostCenterSection: React.FC<CostCenterSectionProps> = ({
-  formData,
-  errors,
-  handleInputChange
-}) => {
+const CostCenterSection: React.FC<CostCenterSectionProps> = ({ control }) => {
   const costCenterOptions = [
     { id: 'dine23', label: 'Dine23' },
     { id: 'roomService', label: 'Room Service' },
@@ -31,19 +26,22 @@ const CostCenterSection: React.FC<CostCenterSectionProps> = ({
         <div className="flex max-sm:flex-col max-sm:items-start max-sm:justify-start max-sm:ml-8 items-center gap-6 whitespace-nowrap">
           {costCenterOptions.map(({ id, label }) => (
             <div key={id} className="flex flex-col">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id={id}
-                  checked={formData[id as keyof FoodFormData] as boolean}
-                  onCheckedChange={(checked) =>
-                    handleInputChange(id as keyof FoodFormData, checked as boolean)
-                  }
-                />
-                <Label htmlFor={id} className="cursor-pointer text-sm">
-                  {label}
-                </Label>
-              </div>
-              {errors[id] && <p className="text-red-500 text-sm">{errors[id]}</p>}
+              <Controller
+                name={id as keyof FoodFormData}
+                control={control}
+                render={({ field }) => (
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id={id}
+                      checked={field.value as boolean}
+                      onCheckedChange={field.onChange}
+                    />
+                    <Label htmlFor={id} className="cursor-pointer text-sm">
+                      {label}
+                    </Label>
+                  </div>
+                )}
+              />              
             </div>
           ))}
         </div>

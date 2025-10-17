@@ -4,17 +4,19 @@ import { Button } from '@/components/ui/button'
 
 interface FormActionsProps {
   onReset: () => void
+  isSubmitting?: boolean
 }
 
-const FormActions: React.FC<FormActionsProps> = ({ onReset }) => {
+const FormActions: React.FC<FormActionsProps> = ({ onReset, isSubmitting = false }) => {
   return (
     <div className="flex justify-between space-x-3">
       <Button
         type="submit"
         size="lg"
+        disabled={isSubmitting}
         className="transition-all duration-200 hover:scale-105"
       >
-        Save
+        {isSubmitting ? 'Saving...' : 'Save'}
       </Button>
 
       <Button
@@ -22,6 +24,7 @@ const FormActions: React.FC<FormActionsProps> = ({ onReset }) => {
         variant="outline"
         size="lg"
         onClick={onReset}
+        disabled={isSubmitting}
         className="transition-all duration-200 hover:bg-gray-100 hover:scale-105"
       >
         Reset Form

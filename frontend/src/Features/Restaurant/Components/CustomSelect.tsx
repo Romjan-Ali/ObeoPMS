@@ -6,7 +6,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import type { FoodFormData } from '../types/food'
+import type { FoodFormData } from '../schemas/foodSchema'
+import { type Control, Controller } from 'react-hook-form'
 
 interface Item {
   title: string
@@ -14,10 +15,7 @@ interface Item {
 }
 
 interface CustomSelectProps {
-  handleInputChange: (
-    field: keyof FoodFormData,
-    value: string | File | boolean | null
-  ) => void
+  control: Control<FoodFormData>
   items: Item[]
   field: keyof FoodFormData
   placeholder: string
@@ -25,28 +23,35 @@ interface CustomSelectProps {
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
-  handleInputChange,
+  control,
   items,
   field,
   placeholder,
   required = false,
 }) => {
   return (
-    <Select
-      required={required}
-      onValueChange={(value) => handleInputChange(field, value)}            
-    >
-      <SelectTrigger className='w-full'>
-        <SelectValue placeholder={placeholder} />
-      </SelectTrigger>
-      <SelectContent>
-        {items.map((item) => (
-          <SelectItem key={item.value} value={item.value}>
-            {item.title}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <Controller
+      name={field}
+      control={control}
+      render={({ field: { onChange, value } }) => (
+        <Select 
+          required={required}
+          value={value as string}
+          onValueChange={onChange}
+        >
+          <SelectTrigger className='w-full'>
+            <SelectValue placeholder={placeholder} />
+          </SelectTrigger>
+          <SelectContent>
+            {items.map((item) => (
+              <SelectItem key={item.value} value={item.value}>
+                {item.title}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
+    />
   )
 }
 

@@ -1,6 +1,6 @@
 // src/Features/Restaurant/Components/AddFoodForm.tsx
 import React from 'react'
-import { useFoodForm } from '../Hooks/userFoodForm'
+import { useFoodForm } from '../Hooks/useFoodForm'
 import BasicInformationSection from './FormSections/BasicInformationSection'
 import CheckboxOptionsSection from './FormSections/CheckboxOptionsSection'
 import CostCenterSection from './FormSections/CostCenterSection'
@@ -10,13 +10,16 @@ import VatSection from './FormSections/VatSection'
 
 const AddFoodForm: React.FC = () => {
   const {
-    formData,
+    register,
+    handleSubmit,
     errors,
     handleInputChange,
     handleFileChange,
     fileInputRef,
     resetFormData,
-    handleSubmit,
+    control,
+    formData,
+    isSubmitting,
   } = useFoodForm()
 
   return (
@@ -24,6 +27,8 @@ const AddFoodForm: React.FC = () => {
       <div className="lg:grid gap-x-16 grid-cols-1 lg:grid-cols-2 space-y-6">
         <div className="lg:grid grid-cols-[100px_1fr] gap-6">
           <BasicInformationSection
+            register={register}
+            control={control}
             formData={formData}
             errors={errors}
             handleInputChange={handleInputChange}
@@ -33,25 +38,14 @@ const AddFoodForm: React.FC = () => {
         </div>
 
         <div className="space-y-6">
-          <VatSection
-            formData={formData}
-            errors={errors}
-            handleInputChange={handleInputChange}
-          />
+          <VatSection register={register} errors={errors} />
 
-          <CheckboxOptionsSection
-            formData={formData}
-            errors={errors}
-            handleInputChange={handleInputChange}
-          />
+          <CheckboxOptionsSection control={control} />
 
-          <CostCenterSection
-            formData={formData}
-            errors={errors}
-            handleInputChange={handleInputChange}
-          />
+          <CostCenterSection control={control} />
 
           <AdditionalDetailsSection
+            control={control}
             formData={formData}
             errors={errors}
             handleInputChange={handleInputChange}
@@ -59,7 +53,7 @@ const AddFoodForm: React.FC = () => {
         </div>
       </div>
       <div className="border-t"></div>
-      <FormActions onReset={resetFormData} />
+      <FormActions onReset={resetFormData} isSubmitting={isSubmitting} />
     </form>
   )
 }

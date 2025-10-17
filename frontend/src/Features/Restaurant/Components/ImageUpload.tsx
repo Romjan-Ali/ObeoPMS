@@ -7,10 +7,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { type FoodFormData } from '../types/food'
+import { type FoodFormData } from '../schemas/foodSchema'
+import {type UseFormRegister} from 'react-hook-form'
 import { HelpCircle } from 'lucide-react'
 
 interface ImageUploadProps {
+  register: UseFormRegister<FoodFormData>
   handleInputChange: (
     field: keyof FoodFormData,
     value: string | File | boolean | null

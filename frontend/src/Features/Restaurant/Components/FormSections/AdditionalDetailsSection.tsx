@@ -1,13 +1,15 @@
 // src/Features/Restaurant/Components/FormSections/AdditionalDetailsSection.tsx
 import React from 'react'
-import { type FoodFormData } from '../../types/food'
+import { type FoodFormData } from '../../schemas/foodSchema'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import CustomSelect from '../CustomSelect'
+import {type Control, type FieldErrors} from 'react-hook-form'
 
 interface AdditionalDetailsSectionProps {
+  control: Control<FoodFormData>
   formData: FoodFormData
-  errors: Record<string, string>
+  errors: FieldErrors<FoodFormData>
   handleInputChange: (
     field: keyof FoodFormData,
     value: string | File | boolean | null
@@ -15,6 +17,7 @@ interface AdditionalDetailsSectionProps {
 }
 
 const AdditionalDetailsSection: React.FC<AdditionalDetailsSectionProps> = ({
+  control,
   formData,
   errors,
   handleInputChange,
@@ -31,14 +34,14 @@ const AdditionalDetailsSection: React.FC<AdditionalDetailsSectionProps> = ({
           onChange={(e) => handleInputChange('cookingTime', e.target.value)}
           className="w-full"
         />
-        {errors.cookingTime && <p className="text-red-500 text-sm">{errors.cookingTime}</p>}
+        {errors.cookingTime && <p className="text-red-500 text-sm">{errors.cookingTime.message}</p>}
       </div>
 
       {/* Status */}
       <div className="flex flex-col">
         <Label htmlFor="status">Status</Label>
         <CustomSelect
-          handleInputChange={handleInputChange}
+          control={control}
           items={[
             { value: 'active', title: 'Active' },
             { value: 'inactive', title: 'Inactive' },
@@ -47,7 +50,7 @@ const AdditionalDetailsSection: React.FC<AdditionalDetailsSectionProps> = ({
           field="status"
           placeholder="Select Status"
         />
-        {errors.status && <p className="text-red-500 text-sm">{errors.status}</p>}
+        {errors.status && <p className="text-red-500 text-sm">{errors.status.message}</p>}
       </div>
     </div>
   )

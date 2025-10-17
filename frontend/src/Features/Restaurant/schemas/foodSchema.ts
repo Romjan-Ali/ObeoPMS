@@ -19,10 +19,9 @@ export const foodSchema = z.object({
         !file || ['image/jpeg', 'image/png', 'image/webp'].includes(file.type),
       { message: 'Invalid image type (only jpeg, png, webp allowed)' }
     ),
-  vat: z
-    .string()
-    .regex(/^\d+(\.\d{1,2})?$/, { message: 'Invalid VAT' })
-    .optional(),
+vat: z
+  .number()
+  .optional(),  
   offer: z.boolean(),
   special: z.boolean(),
   customQuantity: z.boolean(),
@@ -37,3 +36,5 @@ export const foodSchema = z.object({
   specialSetMenu: z.boolean(),
   status: z.string().optional(),
 })
+
+export type FoodFormData = z.infer<typeof foodSchema>

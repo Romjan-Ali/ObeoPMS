@@ -1,18 +1,15 @@
 // src/Features/Restaurant/Components/FormSections/CheckboxOptionsSection.tsx
 import React from 'react'
-import { type FoodFormData } from '../../types/food'
+import { type FoodFormData } from '../../schemas/foodSchema'
 import LeftLabelCheckboxField from '../LeftLabelCheckboxField'
+import { type Control } from 'react-hook-form'
 
 interface CheckboxOptionsSectionProps {
-  formData: FoodFormData
-  errors: Record<string, string>
-  handleInputChange: (field: keyof FoodFormData, value: string | File | boolean | null) => void
+  control: Control<FoodFormData>
 }
 
 const CheckboxOptionsSection: React.FC<CheckboxOptionsSectionProps> = ({
-  formData,
-  errors,
-  handleInputChange
+  control,
 }) => {
   const checkboxFields = [
     { id: 'offer', label: 'Offer', tooltip: 'Enable this option to mark the item as part of a promotional offer.' },
@@ -29,11 +26,9 @@ const CheckboxOptionsSection: React.FC<CheckboxOptionsSectionProps> = ({
           <LeftLabelCheckboxField
             id={field.id as keyof FoodFormData}
             label={field.label}
-            formData={formData}
-            handleInputChange={handleInputChange}
+            control={control}
             tooltipContent={field.tooltip}
-          />
-          {errors[field.id] && <p className="text-red-500 text-sm">{errors[field.id]}</p>}
+          />          
         </div>        
       ))}
       

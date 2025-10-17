@@ -1,5 +1,5 @@
 // src/Features/Restaurant/Components/CheckboxField.tsx
-import type { FoodFormData } from "../types/food"
+import type { FoodFormData } from '../schemas/foodSchema'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 
