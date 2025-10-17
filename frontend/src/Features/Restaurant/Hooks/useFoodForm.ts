@@ -55,7 +55,6 @@ export const useFoodForm = () => {
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
-  // ✅ Type-safe handleInputChange
   const handleInputChange = (
     field: keyof FoodFormData,
     value: string | number | boolean | File | null | undefined
@@ -68,7 +67,6 @@ export const useFoodForm = () => {
     setValue('image', file)
   }
 
-  // ✅ Type-safe onSubmit
   const onSubmit: SubmitHandler<FoodFormData> = async (data) => {
     try {
       const result = await addFood(data).unwrap()
