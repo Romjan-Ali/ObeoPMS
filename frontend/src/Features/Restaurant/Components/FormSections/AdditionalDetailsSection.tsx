@@ -25,7 +25,7 @@ const AdditionalDetailsSection: React.FC<AdditionalDetailsSectionProps> = ({
   return (
     <div className="grid grid-cols-[100px_1fr] gap-6">
       {/* Cooking Time */}
-      <div className="flex flex-col">
+
         <Label htmlFor="cookingTime">Cooking Time</Label>
         <Input
           id="cookingTime"
@@ -35,10 +35,10 @@ const AdditionalDetailsSection: React.FC<AdditionalDetailsSectionProps> = ({
           className="w-full"
         />
         {errors.cookingTime && <p className="text-red-500 text-sm">{errors.cookingTime.message}</p>}
-      </div>
+
 
       {/* Status */}
-      <div className="flex flex-col">
+
         <Label htmlFor="status">Status</Label>
         <CustomSelect
           control={control}
@@ -52,7 +52,6 @@ const AdditionalDetailsSection: React.FC<AdditionalDetailsSectionProps> = ({
         />
         {errors.status && <p className="text-red-500 text-sm">{errors.status.message}</p>}
       </div>
-    </div>
   )
 }
 
