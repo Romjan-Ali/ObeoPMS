@@ -19,9 +19,7 @@ export const foodSchema = z.object({
         !file || ['image/jpeg', 'image/png', 'image/webp'].includes(file.type),
       { message: 'Invalid image type (only jpeg, png, webp allowed)' }
     ),
-vat: z
-  .number()
-  .optional(),  
+  vat: z.number().optional(),
   offer: z.boolean(),
   special: z.boolean(),
   customQuantity: z.boolean(),

@@ -1,6 +1,6 @@
 // src/Features/Restaurant/Hooks/useFoodForm.ts
 import { useRef } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { type FoodFormData, foodSchema } from '../schemas/foodSchema'
 import { useAddFoodMutation } from '@/Redux/features/food.api'
@@ -14,7 +14,7 @@ const defaultValues: FoodFormData = {
   notes: '',
   description: '',
   image: undefined,
-  vat: '',
+  vat: undefined,
   offer: false,
   special: false,
   customQuantity: false,
@@ -48,21 +48,19 @@ export const useFoodForm = () => {
   })
 
   const [addFood, { isLoading }] = useAddFoodMutation()
-
   const formData = watch()
 
   const resetFormData = () => {
     reset(defaultValues)
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
-    }
+    if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
+  // ✅ Type-safe handleInputChange
   const handleInputChange = (
     field: keyof FoodFormData,
-    value: string | File | boolean | undefined | null
+    value: string | number | boolean | File | null | undefined
   ) => {
-    setValue(field, value)
+  setValue(field, value ?? undefined)
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,22 +68,14 @@ export const useFoodForm = () => {
     setValue('image', file)
   }
 
-  const onSubmit = async (data: FoodFormData) => {
-    console.log('form data:', data)
-
+  // ✅ Type-safe onSubmit
+  const onSubmit: SubmitHandler<FoodFormData> = async (data) => {
     try {
       const result = await addFood(data).unwrap()
-      console.log('result', result)
-      // Optionally reset form on success
-      // resetFormData()
+      if (result.success) resetFormData()
     } catch (error) {
       const err = error as AxiosError<{ message: string }>
-      console.log(err)
-      if (err.response?.data?.message) {
-        console.log(err.response.data.message)
-      } else {
-        console.log(err.message)
-      }
+      console.error(err.response?.data?.message ?? err.message)
     }
   }
 
