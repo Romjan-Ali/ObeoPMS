@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { type FoodFormData } from '../schemas/foodSchema'
-import {type UseFormRegister} from 'react-hook-form'
+import { type FieldErrors, type UseFormRegister } from 'react-hook-form'
 import { HelpCircle } from 'lucide-react'
 
 interface ImageUploadProps {
@@ -20,6 +20,7 @@ interface ImageUploadProps {
   handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   fileInputRef: React.RefObject<HTMLInputElement | null>
   formData: FoodFormData
+  errors: FieldErrors<FoodFormData>
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
@@ -27,6 +28,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   handleFileChange,
   fileInputRef,
   formData,
+  errors
 }) => {
   return (
     <>
@@ -75,6 +77,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               ✕
             </button>
           </div>
+        )}
+        {errors.image && (
+          <p className="text-red-500 text-sm">{errors.image.message}</p>
         )}
       </div>
     </>

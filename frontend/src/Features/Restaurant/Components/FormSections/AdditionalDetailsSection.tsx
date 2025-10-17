@@ -4,7 +4,7 @@ import { type FoodFormData } from '../../schemas/foodSchema'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import CustomSelect from '../CustomSelect'
-import {type Control, type FieldErrors} from 'react-hook-form'
+import { type Control, type FieldErrors } from 'react-hook-form'
 
 interface AdditionalDetailsSectionProps {
   control: Control<FoodFormData>
@@ -26,7 +26,8 @@ const AdditionalDetailsSection: React.FC<AdditionalDetailsSectionProps> = ({
     <div className="grid grid-cols-[100px_1fr] gap-6">
       {/* Cooking Time */}
 
-        <Label htmlFor="cookingTime">Cooking Time</Label>
+      <Label htmlFor="cookingTime">Cooking Time</Label>
+      <div>
         <Input
           id="cookingTime"
           type="time"
@@ -34,12 +35,15 @@ const AdditionalDetailsSection: React.FC<AdditionalDetailsSectionProps> = ({
           onChange={(e) => handleInputChange('cookingTime', e.target.value)}
           className="w-full"
         />
-        {errors.cookingTime && <p className="text-red-500 text-sm">{errors.cookingTime.message}</p>}
-
+        {errors.cookingTime && (
+          <p className="text-red-500 text-sm">{errors.cookingTime.message}</p>
+        )}
+      </div>
 
       {/* Status */}
 
-        <Label htmlFor="status">Status</Label>
+      <Label htmlFor="status">Status</Label>
+      <div>
         <CustomSelect
           control={control}
           items={[
@@ -50,8 +54,11 @@ const AdditionalDetailsSection: React.FC<AdditionalDetailsSectionProps> = ({
           field="status"
           placeholder="Select Status"
         />
-        {errors.status && <p className="text-red-500 text-sm">{errors.status.message}</p>}
+        {errors.status && (
+          <p className="text-red-500 text-sm">{errors.status.message}</p>
+        )}
       </div>
+    </div>
   )
 }
 
